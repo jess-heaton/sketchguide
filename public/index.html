@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SketchGuide — Learn to Draw Anything</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== SCREEN: HOME ===== -->
+  <div id="screen-home" class="screen active">
+    <header class="nav">
+      <div class="logo">
+        <span class="logo-icon">✏️</span>
+        <span class="logo-text">SketchGuide</span>
+      </div>
+      <div class="nav-right">
+        <button class="nav-link" id="nav-portfolio">🖼️ Portfolio</button>
+        <div class="nav-badge">✨ AI-Powered</div>
+      </div>
+    </header>
+
+    <main class="hero">
+      <div class="hero-content">
+        <div class="hero-tag">🎨 Your personal drawing tutor</div>
+        <h1 class="hero-title">
+          Upload any image.<br />
+          <span class="gradient-text">Learn to draw it.</span>
+        </h1>
+        <p class="hero-subtitle">
+          Drop in a photo of anything — a cat, a face, a landscape —<br />
+          and get a beautiful step-by-step pencil tutorial made just for you.
+        </p>
+
+        <div class="upload-card" id="upload-card">
+          <div class="upload-zone" id="upload-zone">
+            <div class="upload-icon-wrapper">
+              <div class="upload-icon">🖼️</div>
+              <div class="upload-pulse"></div>
+            </div>
+            <p class="upload-primary">Drag & drop your image here</p>
+            <p class="upload-secondary">or</p>
+            <label class="btn btn-upload" for="file-input">Choose a Photo</label>
+            <input type="file" id="file-input" accept="image/*" hidden />
+            <p class="upload-hint">JPG, PNG, WebP · Max 20MB</p>
+          </div>
+          <div class="upload-preview" id="upload-preview" style="display:none">
+            <img id="preview-img" src="" alt="Preview" />
+            <div class="preview-overlay">
+              <span id="preview-filename" class="preview-name">photo.jpg</span>
+              <button class="btn-icon" id="remove-image" title="Remove">✕</button>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-generate" id="btn-generate" disabled>
+          <span>🪄</span> Generate My Tutorial <span class="btn-arrow">→</span>
+        </button>
+
+        <div class="sample-prompts">
+          <span class="sample-label">Popular:</span>
+          <span class="sample-chip">🐱 cat</span>
+          <span class="sample-chip">🌸 flower</span>
+          <span class="sample-chip">🦊 fox</span>
+          <span class="sample-chip">🏔️ mountain</span>
+          <span class="sample-chip">🐉 dragon</span>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="floating-card card-1">
+          <span class="step-badge">Step 1</span>
+          <div class="card-line"></div><div class="card-line short"></div>
+        </div>
+        <div class="floating-card card-2">
+          <span class="step-badge done">✓ Done!</span>
+          <div class="card-line"></div><div class="card-line short"></div>
+        </div>
+        <div class="floating-card card-3">
+          <div class="mini-progress"><div class="mini-bar"></div></div>
+        </div>
+        <div class="floating-orb orb-1"></div>
+        <div class="floating-orb orb-2"></div>
+        <div class="floating-orb orb-3"></div>
+      </div>
+    </main>
+
+    <div class="features-row">
+      <div class="feature-chip">⚡ Instant AI Analysis</div>
+      <div class="feature-chip">🎯 Beginner Friendly</div>
+      <div class="feature-chip">✨ Progressive Steps</div>
+      <div class="feature-chip">🖊️ Pencil Techniques</div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: PORTFOLIO ===== -->
+  <div id="screen-portfolio" class="screen">
+    <header class="nav">
+      <div class="logo">
+        <span class="logo-icon">✏️</span>
+        <span class="logo-text">SketchGuide</span>
+      </div>
+      <button class="nav-link" id="nav-home-from-portfolio">← Back</button>
+    </header>
+
+    <div class="portfolio-page">
+      <div class="portfolio-hero">
+        <h1 class="portfolio-title">🖼️ Portfolio</h1>
+        <p class="portfolio-sub">Tutorials you've completed, and the community's best work.</p>
+      </div>
+
+      <!-- My drawings -->
+      <section class="portfolio-section" id="my-section">
+        <div class="portfolio-section-header">
+          <h2 class="portfolio-section-title">My Drawings</h2>
+          <button class="btn btn-upload small" id="portfolio-new-btn">+ New Tutorial</button>
+        </div>
+        <div class="portfolio-grid" id="my-grid">
+          <div class="portfolio-empty" id="my-empty">
+            <div class="empty-icon">🎨</div>
+            <p>No drawings yet — complete a tutorial to save it here!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Community -->
+      <section class="portfolio-section">
+        <div class="portfolio-section-header">
+          <h2 class="portfolio-section-title">Community</h2>
+          <span class="portfolio-section-tag">Public</span>
+        </div>
+        <div class="portfolio-grid" id="community-grid">
+          <div class="portfolio-loading-row" id="community-loading">
+            <div class="p-skeleton"></div>
+            <div class="p-skeleton"></div>
+            <div class="p-skeleton"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: PORTFOLIO DETAIL ===== -->
+  <div id="screen-portfolio-detail" class="screen">
+    <header class="tut-topbar" style="position:sticky;top:0;z-index:10;background:#fff;">
+      <button class="back-btn" id="detail-back-btn">✕</button>
+      <div class="tutorial-title-wrap" style="flex:1;text-align:center;">
+        <h2 class="tutorial-subject" id="detail-subject"></h2>
+      </div>
+      <div style="width:36px"></div>
+    </header>
+    <div class="detail-steps" id="detail-steps"></div>
+  </div>
+
+  <!-- ===== SCREEN: LOADING ===== -->
+  <div id="screen-loading" class="screen">
+    <div class="loading-layout">
+      <div class="loading-preview-wrap">
+        <img id="loading-preview-img" src="" alt="" class="loading-preview-img" />
+        <div class="loading-preview-overlay">
+          <div class="drawing-lines">
+            <div class="dl dl-1"></div>
+            <div class="dl dl-2"></div>
+            <div class="dl dl-3"></div>
+            <div class="dl dl-4"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="loading-right">
+        <div class="pencil-anim">✏️</div>
+        <h2 class="loading-title">Crafting your tutorial<span class="dot-anim"></span></h2>
+        <p class="loading-message" id="loading-message">Studying your image...</p>
+
+        <div class="loading-steps-container">
+          <div class="loading-step" id="ls-1">
+            <div class="ls-icon">🔍</div>
+            <div class="ls-text">
+              <span class="ls-label">Analyzing image</span>
+              <span class="ls-status" id="ls-1-status">In progress</span>
+            </div>
+            <div class="ls-spinner" id="ls-1-spinner"></div>
+          </div>
+          <div class="loading-step pending" id="ls-2">
+            <div class="ls-icon">🧠</div>
+            <div class="ls-text">
+              <span class="ls-label">Planning steps</span>
+              <span class="ls-status" id="ls-2-status">Waiting</span>
+            </div>
+            <div class="ls-spinner" id="ls-2-spinner"></div>
+          </div>
+          <div class="loading-step pending" id="ls-3">
+            <div class="ls-icon">🎨</div>
+            <div class="ls-text">
+              <span class="ls-label">Generating illustrations</span>
+              <span class="ls-status" id="ls-3-status">Waiting</span>
+            </div>
+            <div class="ls-spinner" id="ls-3-spinner"></div>
+          </div>
+        </div>
+
+        <div class="loading-bar-wrapper">
+          <div class="loading-bar" id="loading-bar"></div>
+          <span class="loading-pct" id="loading-pct">0%</span>
+        </div>
+        <p class="loading-sub">This takes about 60 seconds ☕</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SCREEN: TUTORIAL ===== -->
+  <div id="screen-tutorial" class="screen">
+
+    <!-- Top bar -->
+    <div class="tut-topbar">
+      <button class="back-btn" id="back-btn">✕</button>
+      <div class="step-dots" id="step-dots"></div>
+      <div class="xp-pill" id="xp-pill">
+        <span>⭐</span><span id="xp-count">0</span>
+      </div>
+    </div>
+
+    <!-- Single step viewer -->
+    <div class="step-viewer" id="step-viewer">
+      <!-- Cards are injected here, one visible at a time -->
+    </div>
+
+  </div>
+
+  <!-- ===== FEEDBACK DRAWER ===== -->
+  <div class="feedback-drawer" id="feedback-drawer">
+    <div class="feedback-header">
+      <span class="feedback-title">📸 Drawing Check</span>
+      <button class="feedback-close" id="feedback-close">✕</button>
+    </div>
+
+    <!-- Upload state -->
+    <div id="fb-upload-state">
+      <p class="fb-prompt">Take a photo of your drawing — I'll give you feedback!</p>
+      <div class="fb-upload-zone" id="fb-upload-zone">
+        <input type="file" id="fb-file-input" accept="image/*" capture="environment" hidden />
+        <label class="fb-upload-btn" for="fb-file-input">
+          <span>📷</span> Take a Photo
+        </label>
+        <label class="fb-upload-btn secondary" for="fb-file-input-gallery">
+          <span>🖼️</span> Choose from Gallery
+        </label>
+        <input type="file" id="fb-file-input-gallery" accept="image/*" hidden />
+      </div>
+      <div class="fb-preview-wrap" id="fb-preview-wrap" style="display:none">
+        <img id="fb-preview-img" src="" alt="Your drawing" />
+        <button class="fb-retake" id="fb-retake">↩ Retake</button>
+      </div>
+      <button class="btn-analyze" id="btn-analyze" disabled>
+        <span>🔍</span> Analyze My Drawing
+      </button>
+    </div>
+
+    <!-- Loading state -->
+    <div id="fb-loading-state" style="display:none">
+      <div class="fb-analyzing">
+        <div class="fb-pencil-spin">✏️</div>
+        <p class="fb-analyzing-text">Studying your drawing<span class="dot-anim"></span></p>
+      </div>
+    </div>
+
+    <!-- Result state -->
+    <div id="fb-result-state" style="display:none">
+      <div class="fb-score-row" id="fb-score-row">
+        <div class="fb-stars" id="fb-stars"></div>
+        <span class="fb-score-label" id="fb-score-label"></span>
+      </div>
+      <div class="fb-section">
+        <div class="fb-section-title">✅ What's working</div>
+        <ul class="fb-list fb-strengths" id="fb-strengths"></ul>
+      </div>
+      <div class="fb-section">
+        <div class="fb-section-title">🎯 One thing to try</div>
+        <ul class="fb-list fb-improvements" id="fb-improvements"></ul>
+      </div>
+      <div class="fb-encouragement" id="fb-encouragement"></div>
+      <div class="fb-actions">
+        <button class="fb-action-btn retry" id="fb-retry">Try Again 🔄</button>
+        <button class="fb-action-btn next" id="fb-next-step-btn" style="display:none">Next Step →</button>
+      </div>
+    </div>
+  </div>
+  <div class="feedback-backdrop" id="feedback-backdrop"></div>
+
+  <!-- ===== IMAGE ZOOM OVERLAY ===== -->
+  <div class="zoom-overlay" id="zoom-overlay">
+    <button class="zoom-close" id="zoom-close" aria-label="Close">✕</button>
+    <img id="zoom-img" src="" alt="Zoomed illustration" />
+    <div class="zoom-hint">Tap anywhere to close</div>
+  </div>
+
+  <!-- ===== TOAST (encouragement) ===== -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ===== FLOATING XP ===== -->
+  <div class="floating-xp" id="floating-xp">+20 ⭐</div>
+
+  <!-- ===== COMPLETION MODAL ===== -->
+  <div class="modal-overlay" id="modal-overlay" style="display:none">
+    <div class="modal">
+      <div id="confetti-container" class="modal-confetti"></div>
+      <div class="modal-trophy">🏆</div>
+      <h2 class="modal-title">You're an artist!</h2>
+      <p class="modal-sub">Tutorial complete — you nailed all <span id="modal-step-count">6</span> steps.</p>
+      <div class="modal-xp-badge">
+        <span>⭐</span><span id="modal-xp">+120 XP</span>
+      </div>
+      <div class="modal-filmstrip" id="modal-filmstrip"></div>
+
+      <!-- Save to portfolio -->
+      <div class="modal-save-section" id="modal-save-section">
+        <div class="privacy-toggle">
+          <button class="privacy-btn active" id="privacy-public">🌍 Public <span class="privacy-tag free">Free</span></button>
+          <button class="privacy-btn" id="privacy-private">🔒 Private <span class="privacy-tag soon">Coming soon</span></button>
+        </div>
+        <button class="btn btn-save-portfolio" id="btn-save-portfolio">💾 Save to Portfolio</button>
+        <p class="modal-save-note" id="modal-save-note"></p>
+      </div>
+
+      <button class="btn btn-primary" id="modal-restart">Draw Something Else 🎨</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
