@@ -144,7 +144,7 @@ CONTENT POLICY — if the image contains ANY of the following, set "safe": false
 
 If the image is clean and appropriate for a drawing tutorial, set "safe": true and fill in the tutorial.
 
-Study the image closely: note the subject's exact shape, proportions, pose, distinctive features, and overall composition.
+Study the WHOLE image closely — the main subject AND the background, scenery, foreground, and any secondary elements. The tutorial must teach the learner to draw the entire picture, not just the main subject in isolation. Note composition, framing, spatial relationships, proportions, and distinctive features of every major element.
 
 Return ONLY valid JSON (no markdown, no code fences) in this exact format:
 {
@@ -177,7 +177,7 @@ Rules for the steps:
 - Step 3 (details): Add the key defining features, textures, and line weight variation specific to this subject
 - Step 4 (shading): Full shading, shadows, depth — hatching/cross-hatching to make it look three-dimensional
 
-Instructions must reference the actual subject (e.g. "Draw a large oval for the cat's body" not "Draw an oval for the body").
+Instructions must reference the actual subject AND the background/scenery elements (e.g. "Draw a large oval for the cat's body, then a rectangle behind it for the windowsill" not "Draw an oval for the body"). Make sure the tutorial covers the whole composition, not just the main subject.
 
 If "safe" is false, return: { "safe": false, "rejectionReason": "<brief, non-graphic reason>", "subject": null, "subjectDetail": null, "mood": null, "steps": [] }
 
@@ -219,10 +219,10 @@ Return ONLY the JSON object.`
   // using each generated image as the reference for the next one. This keeps all 4 steps
   // visually consistent with a single evolving drawing.
   const reversePrompts = {
-    4: `Create a finished pencil sketch portrait of the subject in the reference image. Accurate proportions and likeness. Full graphite shading with a clear light source, cast shadows, mid-tones, and depth using hatching and cross-hatching. Confident varied line weights. Clean white paper background. Traditional pencil drawing, tutorial illustration style.`,
-    3: `Take the exact pencil drawing shown in the reference image and REMOVE all shading, hatching, and tonal work. Keep every outline, contour, and fine detail exactly as they are, in the same pose, proportions, and composition. The result is a clean pencil line drawing with details but no shading. White paper background.`,
-    2: `Take the exact pencil line drawing shown in the reference image and REMOVE the small interior details, textures, and fine features. Keep only the main outer contour/silhouette and the largest internal dividing lines, in the same pose, proportions, and composition. A loose, sketchy outline drawing. White paper background.`,
-    1: `Take the outline drawing shown in the reference image and REDUCE it to basic geometric construction shapes — circles, ovals, rectangles, and straight centre lines — that map to the subject's major masses and proportions. Same pose, same proportions, same composition. No outlines, no details, no shading. Just a loose ball-and-stick construction skeleton in light pencil on white paper.`
+    4: `Create a finished pencil sketch of the ENTIRE scene in the reference image — include every element: the main subject AND the background, surroundings, foreground objects, ground, sky, scenery, and any secondary elements. Preserve the original composition, framing, and spatial relationships exactly. Accurate proportions and likeness throughout. Full graphite shading with a clear light source, cast shadows, mid-tones, and depth using hatching and cross-hatching. Confident varied line weights. Nothing omitted from the reference image — draw the whole picture. Traditional pencil drawing on white paper, tutorial illustration style.`,
+    3: `Take the exact pencil drawing shown in the reference image and REMOVE all shading, hatching, and tonal work. Keep every outline, contour, and fine detail of BOTH the main subject AND all background/scenery elements exactly as they are, in the same composition, framing, and spatial layout. Nothing is cropped out or omitted. The result is a clean pencil line drawing of the whole scene with details but no shading. White paper.`,
+    2: `Take the exact pencil line drawing shown in the reference image and REMOVE the small interior details, textures, and fine features. Keep the main outer contours/silhouettes of BOTH the subject AND the background elements (scenery, ground, sky, surrounding objects), plus the largest internal dividing lines, in the same full composition and framing. Do not crop or drop any part of the scene. A loose, sketchy outline drawing of the whole picture. White paper.`,
+    1: `Take the outline drawing shown in the reference image and REDUCE it to basic geometric construction shapes — circles, ovals, rectangles, and straight centre lines — that map to the major masses and proportions of the ENTIRE scene (main subject AND background/scenery elements). Preserve the same composition and framing as the reference. No outlines, no details, no shading — just a loose ball-and-stick construction skeleton of the whole picture in light pencil on white paper.`
   };
 
   const stepsByNumber = new Map(parsedData.steps.map(s => [s.stepNumber, s]));

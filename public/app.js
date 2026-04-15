@@ -738,6 +738,27 @@ id('nav-portfolio').addEventListener('click', openPortfolio);
 id('nav-home-from-portfolio').addEventListener('click', () => showScreen('home'));
 id('portfolio-new-btn').addEventListener('click', () => showScreen('home'));
 id('detail-back-btn').addEventListener('click', () => showScreen('portfolio'));
+id('home-portfolio-see-all').addEventListener('click', openPortfolio);
+
+// Home portfolio preview — load on first paint
+async function loadHomePortfolio() {
+  const grid = id('home-portfolio-grid');
+  try {
+    const res = await fetch('/api/portfolio');
+    const entries = await res.json();
+    if (!entries.length) {
+      grid.innerHTML = '<div class="home-portfolio-empty">No community drawings yet — be the first to add one! ✨</div>';
+      return;
+    }
+    grid.innerHTML = '';
+    entries.slice(0, 8).forEach(entry => {
+      grid.appendChild(buildPortfolioCard(entry, false));
+    });
+  } catch {
+    grid.innerHTML = '<div class="home-portfolio-empty">Could not load community drawings.</div>';
+  }
+}
+loadHomePortfolio();
 
 // Privacy toggle (private is coming soon — disabled)
 let isPublic = true;
