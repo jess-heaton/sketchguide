@@ -61,8 +61,9 @@ app.get('/api/stream/:sessionId', (req, res) => {
   const { sessionId } = req.params;
 
   res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Cache-Control', 'no-cache, no-transform');
   res.setHeader('Connection', 'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no'); // disable proxy buffering (Railway/nginx)
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.flushHeaders();
 
@@ -96,7 +97,13 @@ app.get('/api/stream/:sessionId', (req, res) => {
 
   sseClients.set(sessionId, res);
 
+  // Heartbeat every 15s so Railway's HTTP/2 proxy doesn't kill the idle stream
+  const heartbeat = setInterval(() => {
+    try { res.write(': ping\n\n'); } catch { clearInterval(heartbeat); }
+  }, 15000);
+
   req.on('close', () => {
+    clearInterval(heartbeat);
     sseClients.delete(sessionId);
   });
 });
